@@ -8,10 +8,12 @@ pipeline {
     }
     stage('docker build and push') {
       steps {
-        sh '''
-        docker build -t 10.25.240.21:8443/echo-ip .
-        docker push 10.25.240.21:8443/echo-ip
-        '''
+        withEnv(['PATH+EXTRA=/usr/sbin:/usr/bin:/sbin:/bin:/usr/local/bin']) {
+          sh '''
+          docker build -t 10.25.240.21:8443/echo-ip .
+          docker push 10.25.240.21:8443/echo-ip
+          '''
+        }
       }
     }
     stage('deploy kubernetes') {
